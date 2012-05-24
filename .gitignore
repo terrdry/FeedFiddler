@@ -1,0 +1,8 @@
+*.pyc
+*.log
+*.*~
+*.bat
+.coverage
+!runtest.bat
+covhtml/
+unittest.results
