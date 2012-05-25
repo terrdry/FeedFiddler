@@ -4,7 +4,7 @@ import unittest
 import coverage
 import logging
 
-gotCoverage = True
+gotCoverage = False
 printToScreen = True
 unittestResultsFileName = 'unittest.results'
 
@@ -50,17 +50,21 @@ if gotCoverage:
 
 #import all the unit tests here so coverage will be able to register them
 import testBrowser
+import testGReader
 
-suiteList = []
 
 #start our logging
 logger = initializeLogging('unittest.log')
 
 #ADD ALL YOUR TEST SUITES HERE
 #-------------------------------------------
-#<name of suite>
-suiteFirst= testBrowser.getSuite()
-suiteList.append(suiteFirst)
+suiteList = []
+
+#HTTP Browser
+suiteList.append(testBrowser.getSuite())
+
+#Google Reader
+suiteList.append(testGReader.getSuite())
 #-------------------------------------------
 
 
@@ -73,7 +77,8 @@ if __name__=='__main__':
 	startTime = datetime.datetime.now()
 	
 	logger.info('Start test')
-	reportModules = []
+	reportModules = [	'browserHTTP.py',
+	                         		'GReader.py' ]
 	hndl = open(unittestResultsFileName, 'w+')
 	runner = unittest.TextTestRunner(verbosity=2, stream=hndl)
 	testResult = runner.run(allTestSuite)

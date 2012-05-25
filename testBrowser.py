@@ -5,6 +5,8 @@ import logging
 logger = logging.getLogger('ff.%s' % __name__)
 
 import browserHTTP
+#the following module has the error object that browserHTTP will be throwing
+import urllib2
 
 ########################################################################
 class TestBrowser (unittest.TestCase):
@@ -20,21 +22,20 @@ class TestBrowser (unittest.TestCase):
 		logger.debug('attempting to  login to %s' % targetURL )
 		myBrowser = browserHTTP.browserHTTP()
 		
-		result = myBrowser.open(targetURL)
+		result = myBrowser.post(targetURL)
 		if re.search("Feeling Lucky", result):
 			assert True
 		else:
 			self.fail()
 	#----------------------------------------------------------------------
 	def testBrowserBadLogin(self):
-		import urllib2
 		""" Test that we can't connect to a web page"""
 		targetURL = "http://www.google.com/keepout"
 		logger.debug('attempting to  login to %s' % targetURL )
 		myBrowser = browserHTTP.browserHTTP()
 		
 		try:
-			result = myBrowser.open(targetURL)
+			result = myBrowser.post(targetURL)
 			self.fail()
 		except urllib2.HTTPError:
 			assert True

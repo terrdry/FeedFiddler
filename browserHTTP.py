@@ -18,7 +18,6 @@ class  browserHTTP(dict):
 
     #----------------------------------------------------------------------
     def __init__(self):
-        """Constructor"""
         self.txHeaders = {}
         self.txHeaders['User-agent'] = 'Mozilla/4.0 (compatible;MSIE5.5;Windows NT)'
         self.txHeaders['Content-Type'] = 'application/json; charset=UTF-8'
@@ -28,9 +27,15 @@ class  browserHTTP(dict):
         urllib2.install_opener(opener)
         self.urlopen = urllib2.urlopen
         self.Request = urllib2.Request
-    def open(self,url):
+    def post(self,url):
         """Open this URL, return text of page"""
         req = self.Request(url, self.postData, self.txHeaders)
+        handle = self.urlopen(req)
+        return handle.read().strip()
+    def put(self,url):
+        """Open this URL, return text of page"""
+        req = self.Request(url, self.postData, self.txHeaders)
+        req.get_method = lambda: 'PUT'
         handle = self.urlopen(req)
         return handle.read().strip()
         
