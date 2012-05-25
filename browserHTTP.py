@@ -4,7 +4,7 @@ import urllib
 import urllib2
 import cookielib
 
-
+    
 
 ########################################################################
 class  browserHTTP(dict):
@@ -20,7 +20,7 @@ class  browserHTTP(dict):
     def __init__(self):
         self.txHeaders = {}
         self.txHeaders['User-agent'] = 'Mozilla/4.0 (compatible;MSIE5.5;Windows NT)'
-        self.txHeaders['Content-Type'] = 'application/json; charset=UTF-8'
+        #self.txHeaders['Content-Type'] = 'application/json; charset=UTF-8'
         """setup brwser, init cookie lib"""
         self.cookieJar = cookielib.LWPCookieJar()
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookieJar))
