@@ -27,7 +27,7 @@ def initializeLogging(name='FeedFiddler.log'):
 	logLevel = logging.DEBUG
 	
 	#Set the message format the root level 
-	messageFormat = '%(asctime)s %(name)-14s %(levelname)-6s %(message)s'
+	messageFormat = '%(asctime)s %(name)-21s %(levelname)-6s %(message)s'
 	dateFormat= '%m-%d-%y %H:%M:%S'
 	
 	#Setup our logging objects by definining them 
@@ -49,7 +49,7 @@ if gotCoverage:
 	cov.start()
 
 #import all the unit tests here so coverage will be able to register them
-import testFirst
+import testBrowser
 
 suiteList = []
 
@@ -59,7 +59,7 @@ logger = initializeLogging('unittest.log')
 #ADD ALL YOUR TEST SUITES HERE
 #-------------------------------------------
 #<name of suite>
-suiteFirst= testFirst.getSuite()
+suiteFirst= testBrowser.getSuite()
 suiteList.append(suiteFirst)
 #-------------------------------------------
 
