@@ -1,7 +1,7 @@
 import unittest
 
 import logging
-logger = logging.getLogger('ff.testFirst')
+logger = logging.getLogger('ff.%s' % __name__)
 
 
 
