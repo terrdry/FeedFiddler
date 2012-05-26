@@ -19,7 +19,11 @@ class TestGoogleReaderSimple (unittest.TestCase):
 		logger.debug('attempting to  activate google reader account')
 		ggAccount  = GReader.grInterface()
 		
-		ggAccount.login()
+		
+		myID = ggAccount.login()
+		
+		#see if we can list our feeds
+		ggAccount.listFeeds()
 		
 		#result = myBrowser.post(targetURL)
 		#if re.search("Feeling Lucky", result):

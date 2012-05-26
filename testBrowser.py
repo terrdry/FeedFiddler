@@ -37,7 +37,7 @@ class TestBrowser (unittest.TestCase):
 		try:
 			result = myBrowser.post(targetURL)
 			self.fail()
-		except urllib2.HTTPError:
+		except browserHTTP.processingHTTPError:
 			assert True
 	#----------------------------------------------------------------------
 	def tearDown(self):
