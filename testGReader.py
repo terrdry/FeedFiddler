@@ -21,33 +21,25 @@ class TestGoogleReaderSimple (unittest.TestCase):
 			ggAccount  = GReader.googleReader()
 			
 			#login to google
-			ggAccount.login()
+			ggAccount.authenticate()
 		except GReader.googleReaderError,e:
 			self.fail()
 			
 		
-		#see if we can list our feeds
-		#ggAccount.listFeeds()
+	##----------------------------------------------------------------------
+	#def testGoogleReaderBadLogin(self):
+		#""" Attempt to login using bad credentials account"""
+		#try:
+			#ggAccount  = GReader.googleReader()
 		
-		#result = myBrowser.post(targetURL)
-		#if re.search("Feeling Lucky", result):
-			#assert True
-		#else:
-			#self.fail()
-	#----------------------------------------------------------------------
-	def testGoogleReaderBadLogin(self):
-		""" Attempt to login using bad credentials account"""
-		try:
-			ggAccount  = GReader.googleReader()
-		
-			#monkeypatch it so that the password is wrong
-			ggAccount.password = "wrongPassword"
-			ggAccount.login()
+			##monkeypatch it so that the password is wrong
+			#ggAccount.password = "wrongPassword"
+			#ggAccount.authenticate()
 			
-			#if we got this far, its bad, really bad
-			self.fail()
-		except GReader.googleReaderError:
-			pass
+			##if we got this far, its bad, really bad
+			#self.fail()
+		#except GReader.googleReaderError:
+			#pass
 	#----------------------------------------------------------------------
 	def tearDown(self):
 		pass
@@ -63,7 +55,7 @@ class TestGoogleReaderListings(unittest.TestCase):
 		ggAccount  = GReader.googleReader()
 		
 		#login to google
-		ggAccount.login()
+		ggAccount.authenticate()
 		self.ggAccount = ggAccount
 		
 	#----------------------------------------------------------------------
