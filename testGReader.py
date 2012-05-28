@@ -60,7 +60,7 @@ class TestGoogleReaderListings(unittest.TestCase):
 		
 	#----------------------------------------------------------------------
 	def testGoogleReaderSubscriptionList(self):
-		""" Test that we can connect to our google reader account"""
+		""" Test that we can list out our subscriptions"""
 		
 		try:
 			resList = self.ggAccount.listFeeds()
@@ -72,7 +72,7 @@ class TestGoogleReaderListings(unittest.TestCase):
 			self.fail()
 	#----------------------------------------------------------------------
 	def testGoogleReaderTagList(self):
-		""" Test that we can connect to our google reader account"""
+		""" Test that we can list out our tags """
 		
 		try:
 			resList = self.ggAccount.listTags()
@@ -84,10 +84,10 @@ class TestGoogleReaderListings(unittest.TestCase):
 			self.fail()
 	#----------------------------------------------------------------------
 	def testGoogleReaderArticleList(self):
-		""" Test that we can connect to our google reader account"""
+		""" Test that we can list out our articles """
 		
 		try:
-			resList = self.ggAccount.listAndTagArticles()
+			resList = self.ggAccount.listArticles()
 			
 			if not resList:
 				self.fail()
@@ -98,9 +98,43 @@ class TestGoogleReaderListings(unittest.TestCase):
 	def tearDown(self):
 		pass
 
+########################################################################
+class TestGoogleReaderTagging(unittest.TestCase):
+	"""Test the Google Reader Interface search/tagging capabilities"""
+	#----------------------------------------------------------------------
+	def setUp(self):
+		"""Initialization"""
+		#create our reader
+		ggAccount  = GReader.googleReader()
+		
+		#login to google
+		ggAccount.authenticate()
+		self.ggAccount = ggAccount
+	#----------------------------------------------------------------------
+	def testSearchReplace(self):
+		""" Test that we can connect to our google reader account"""
+		
+		try:
+			self.ggAccount.listAndTagArticles()
+			
+		except GReader.googleReaderError,e:
+			self.fail()
+	#----------------------------------------------------------------------
+	def testUserInfo(self):
+		""" Test that we can see our userInfo"""
+		
+		try:
+			userInfoText = self.ggAccount.getUserInfo()
+			
+		except GReader.googleReaderError,e:
+			self.fail()
+	#----------------------------------------------------------------------
+	def tearDown(self):
+		pass
 
 def getSuite():
 	suiteList = []
 	suiteList.append(unittest.makeSuite(TestGoogleReaderSimple))
 	suiteList.append(unittest.makeSuite(TestGoogleReaderListings))
+	suiteList.append(unittest.makeSuite(TestGoogleReaderTagging))
 	return unittest.TestSuite(suiteList)

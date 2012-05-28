@@ -10,12 +10,9 @@ class processingHTTPError(Exception):
     
 
 ########################################################################
-class  browserHTTP(dict):
+class  browserHTTP(object):
     """ Simple browser with cookies"""
     
-    #Stock headers
-    #postData = None
-
     #----------------------------------------------------------------------
     def __init__(self):
         self.txHeaders = {}
@@ -55,6 +52,13 @@ class  browserHTTP(dict):
             return handle.read().strip()
         except urllib2.HTTPError, e:
             raise processingHTTPError(e.code)
+
+
+#----------------------------------------------------------------------
+def urlEncode( params):
+    """URL encoding without the special characters"""
+    return urllib.unquote(urllib.urlencode(params))
+            
         
         
     

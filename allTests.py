@@ -4,7 +4,7 @@ import unittest
 import coverage
 import logging
 
-gotCoverage = False
+gotCoverage = True
 printToScreen = True
 unittestResultsFileName = 'unittest.results'
 

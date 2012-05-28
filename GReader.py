@@ -157,7 +157,6 @@ class  googleReader(object):
         """List all the articles"""
         result = None
         
-        
         getParms = {}
         getParms['output'] = 'json'
         getParms['co'] = 'True'
@@ -178,22 +177,24 @@ class  googleReader(object):
         return result
 
     #----------------------------------------------------------------------
-    def dumpResults(self, result, whichElement):
-        fptr = open('dumpResults.txt','w')
-        
-        for elem in result:
-            fptr.write(elem[whichElement].encode('ascii','ignore')+'\n')
-    
-    #----------------------------------------------------------------------
     def listAndTagArticles(self):
-        """List all the articles"""
-        result = None
+        """List unread articles and implement search and tagging"""
+        result = False
+        
+        #theURL for edititing our articles
         editTagURL = self.apiURL+'edit-tag'
+        
+        #Get the token that will be used for all subsequent transactions 
         transactionToken = self.getToken()
+        
+        #optimize the variable lookup
+        urlEncode = browserHTTP.urlEncode
+        
                     
         for elem in self.listArticles():
+            searchTarget = self.sanitize(elem['title'])
             for regex in self.rules:
-                if re.search(regex[1], self.sanitize(elem['title'])):
+                if re.search(regex[1], searchTarget):
                 
                     postParms={}
                     postParms['T'] = transactionToken
@@ -201,15 +202,13 @@ class  googleReader(object):
                     postParms['i'] = elem['id']
                     postParms['s'] = elem['origin']['streamId']
                     postParms['asynch'] = 'true'
-                    pParms = urllib.unquote(urllib.urlencode(postParms))
+                    pParms = urlEncode(postParms)
                 
                     self.browser.post(editTagURL, pParms)
                 
-              
-                
     #----------------------------------------------------------------------
     def sanitize(self, inString):
-        """Sanitize a UTF-8 code by turning it into ASCII"""
+        """Sanitize UTF-8 code by turning it into ASCII"""
         return inString.encode('ascii', 'ignore')
         
         
