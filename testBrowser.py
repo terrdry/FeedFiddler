@@ -22,7 +22,7 @@ class TestBrowser (unittest.TestCase):
 		logger.debug('attempting to  login to %s' % targetURL )
 		myBrowser = browserHTTP.browserHTTP()
 		
-		result = myBrowser.post(targetURL)
+		result = myBrowser.post(targetURL, None)
 		if re.search("Feeling Lucky", result):
 			assert True
 		else:
@@ -35,7 +35,7 @@ class TestBrowser (unittest.TestCase):
 		myBrowser = browserHTTP.browserHTTP()
 		
 		try:
-			result = myBrowser.post(targetURL)
+			result = myBrowser.post(targetURL,None)
 			self.fail()
 		except browserHTTP.processingHTTPError:
 			assert True

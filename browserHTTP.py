@@ -14,12 +14,13 @@ class  browserHTTP(dict):
     """ Simple browser with cookies"""
     
     #Stock headers
-    postData = None
+    #postData = None
 
     #----------------------------------------------------------------------
     def __init__(self):
         self.txHeaders = {}
         self.txHeaders['User-agent'] = 'Mozilla/4.0 (compatible;MSIE5.5;Windows NT)'
+        self.txHeaders['Content-type'] = 'application/x-www-form-urlencoded'
         #self.txHeaders['Content-Type'] = 'application/json; charset=UTF-8'
         """setup brwser, init cookie lib"""
         opener = urllib2.build_opener(urllib2.HTTPHandler())
@@ -27,10 +28,10 @@ class  browserHTTP(dict):
         self.urlopen = urllib2.urlopen
         self.Request = urllib2.Request
     #----------------------------------------------------------------------
-    def post(self,url):
+    def post(self,url, postData):
         """Open this URL, return text of page"""
         try:
-            req = self.Request(url, self.postData, self.txHeaders)
+            req = self.Request(url, postData, self.txHeaders)
             handle = self.urlopen(req)
             return handle.read().strip()
         except urllib2.HTTPError, e:

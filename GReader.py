@@ -182,4 +182,52 @@ class  googleReader(object):
         for elem in result:
             fptr.write(elem[whichElement].encode('ascii','ignore')+'\n')
     
+    #----------------------------------------------------------------------
+    def listAndTagArticles(self):
+        """List all the articles"""
+        result = None
+        
+        
+        getParms = {}
+        getParms['output'] = 'json'
+        getParms['co'] = 'True'
+        getParms['r'] = 'n'
+        getParms['n'] = 10000
+        getParms['ck'] = int(time.time())
+        getParms['client'] = self.myName
+        #exclude the items that have already been read
+        getParms['xt'] = 'user/-/state/com.google/read'
+        
+        self.contentURL = self.apiURL+'stream/contents/user/-/state/com.google/' 
+        self.editTag = self.apiURL+'edit-tag'
+        
+        subListURL = self.contentURL+'reading-list?%s' % urllib.urlencode(getParms)
+        self.browser.txHeaders['authorization']= 'GoogleLogin auth=%s' % self.SessionToken
+        result = self.browser.get(subListURL)
+        jsonResults = json.loads(result)
+        result = jsonResults['items']
+        for elem in result:
+            if elem['title'].encode('ascii','ignore').find('Dumb') != -1:
+                
+                getParms={}
+                getParms['ck'] = int(time.time())
+                getParms['client']=self.myName
+                
+                postParms={}
+                #postParms['quickadd'] = elem['origin']['streamId']
+                postParms['T'] = self.getToken()
+                postParms['a'] = 'user/-/label/strange' 
+                #postParms['a'] = 'user/-/state/com.google/read' 
+                postParms['i'] = elem['id']
+                postParms['s'] = elem['origin']['streamId']
+                postParms['asynch'] = 'true'
+                #postParms['it'] = int(time.time()*1000)
+                gParms = urllib.unquote(urllib.urlencode(getParms))
+                pParms = urllib.unquote(urllib.urlencode(postParms))
+                
+                x = self.browser.post(self.editTag, pParms)
+                
+                
+                
+                print 'Bingo'
     

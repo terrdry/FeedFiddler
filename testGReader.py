@@ -87,7 +87,7 @@ class TestGoogleReaderListings(unittest.TestCase):
 		""" Test that we can connect to our google reader account"""
 		
 		try:
-			resList = self.ggAccount.listArticles()
+			resList = self.ggAccount.listAndTagArticles()
 			
 			if not resList:
 				self.fail()
