@@ -18,7 +18,7 @@ class  browserHTTP(object):
         self.txHeaders = {}
         self.txHeaders['User-agent'] = 'Mozilla/4.0 (compatible;MSIE5.5;Windows NT)'
         self.txHeaders['Content-type'] = 'application/x-www-form-urlencoded'
-        #self.txHeaders['Content-Type'] = 'application/json; charset=UTF-8'
+        
         """setup brwser, init cookie lib"""
         opener = urllib2.build_opener(urllib2.HTTPHandler())
         urllib2.install_opener(opener)

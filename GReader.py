@@ -11,7 +11,7 @@ import os.path
 
 import browserHTTP
 
-
+logger = logging.getLogger('ff.%s' % __name__)
 #########################################################################
 class googleReaderError(Exception):    
     """Processing Error Exception stub """
@@ -59,10 +59,12 @@ class  googleReader(object):
         
         if os.path.isfile(self.authFile):
             #grab the auth key in it
+            logger.info('Used the auth file for authentication')
             authString = open(self.authFile, 'r').read()
         else:
             #Login to google and get the authentication key
             #create and store the key in the file
+            logger.info('Logging in to Google for authentication')
             authString = self.login()
             open(self.authFile, 'w').write(authString)
             
@@ -105,12 +107,16 @@ class  googleReader(object):
                     break
         #raise an error condition if we are not able to find the Auth value
         if authString == None:
-            raise googleReaderError('Invalid login: SessionToken was not generated')
+            errorMessage = 'Invalid login: SessionToken was not generated'
+            logger.error(errorMessage)
+            raise googleReaderError(errorMessage)
+        
         return authString
                 
     #----------------------------------------------------------------------
     def getToken(self):
         """Get the token """
+        logger.info('Token being retrieved...')
         self.browser.txHeaders = {}
         self.browser.txHeaders['authorization']= 'GoogleLogin auth=%s' % self.SessionToken
         return self.browser.get(self.tokenURL)
@@ -118,6 +124,7 @@ class  googleReader(object):
     #----------------------------------------------------------------------
     def getUserInfo(self):
         """Get the token """
+        logger.info('UserInfo being retrieved...')
         self.browser.txHeaders = {}
         self.browser.txHeaders['authorization']= 'GoogleLogin auth=%s' % self.SessionToken
         self.tokenURL = self.apiURL+'user-info'
@@ -138,6 +145,9 @@ class  googleReader(object):
         result = self.browser.get(subListURL)
         jsonResults = json.loads(result)
         result = jsonResults['subscriptions']
+        
+        #list results for debugging 
+        [ logger.debug('feed item: %s' % self.sanitize(element['title']) ) for element in result]
         return result
     #----------------------------------------------------------------------
     def listTags(self):
@@ -150,6 +160,9 @@ class  googleReader(object):
         result = self.browser.get(subListURL)
         jsonResults = json.loads(result)
         result = jsonResults['tags']
+        
+        #list results for debugging 
+        [ logger.debug('tag item: %s' % self.sanitize(element['id']) ) for element in result]
         return result
 
     #----------------------------------------------------------------------
@@ -174,6 +187,8 @@ class  googleReader(object):
         result = self.browser.get(subListURL)
         jsonResults = json.loads(result)
         result = jsonResults['items']
+        #list results for debugging 
+        [ logger.debug('article item: %s' % self.sanitize(element['title']) ) for element in result]
         return result
 
     #----------------------------------------------------------------------
@@ -184,6 +199,11 @@ class  googleReader(object):
         #theURL for edititing our articles
         editTagURL = self.apiURL+'edit-tag'
         
+        #define the list of fields we may want to search
+        lookList = [ 'elem["title"]', \
+                     'elem["content"]["content"]',
+                     'elem["summary"]["content"]' ]
+        
         #Get the token that will be used for all subsequent transactions 
         transactionToken = self.getToken()
         
@@ -191,8 +211,16 @@ class  googleReader(object):
         urlEncode = browserHTTP.urlEncode
         
                     
+        logger.info('List and tag articles')
         for elem in self.listArticles():
-            searchTarget = self.sanitize(elem['title'])
+            searchTarget = ''
+            for i in lookList:
+                try:
+                    searchTarget += self.sanitize(eval(i))
+                except KeyError:
+                    pass
+                
+            logger.debug('search target is %s' % searchTarget)
             for regex in self.rules:
                 if re.search(regex[1], searchTarget):
                 
@@ -203,6 +231,8 @@ class  googleReader(object):
                     postParms['s'] = elem['origin']['streamId']
                     postParms['asynch'] = 'true'
                     pParms = urlEncode(postParms)
+                    
+                    logger.info('Hit on article:%s and assigned to %s' % (self.sanitize(elem['title']), regex[0]))
                 
                     self.browser.post(editTagURL, pParms)
                 
