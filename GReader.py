@@ -222,7 +222,7 @@ class  googleReader(object):
                 
             logger.debug('search target is %s' % searchTarget)
             for regex in self.rules:
-                if re.search(regex[1], searchTarget):
+                if re.search(regex[1], searchTarget,re.I):
                 
                     postParms={}
                     postParms['T'] = transactionToken
@@ -232,7 +232,7 @@ class  googleReader(object):
                     postParms['asynch'] = 'true'
                     pParms = urlEncode(postParms)
                     
-                    logger.info('Hit on article:%s and assigned to %s' % (self.sanitize(elem['title']), regex[0]))
+                    logger.info('(Hit):"%s" -> %s' % (self.sanitize(elem['title']), regex[0]))
                 
                     self.browser.post(editTagURL, pParms)
                 
