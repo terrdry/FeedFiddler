@@ -22,17 +22,20 @@ can be used for debugging.
 
 Prerequisites
 -------------
+
 pyCurl
 GoogleReader account
 
 Setup
 -----
 Update the FeedFiddler.ini file
+
     [SECURITY]
     username=<userName>@gmail.com
     password=********
     
 Create your regex expression and the corresponding tag that the article will appear under
+
     [RULES]
     programming=Python|Ruby
     programming=C|Haskell
@@ -42,6 +45,7 @@ You can have multiple entries for the same tag with different regular expression
 
 Usage
 -----
+
 You can just invoke it from the command line,
 
     ./FeedFiddler.py
