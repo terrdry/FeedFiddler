@@ -23,8 +23,8 @@ can be used for debugging.
 Prerequisites
 -------------
 
-pyCurl
-GoogleReader account
+* pyCurl
+* GoogleReader account
 
 Setup
 -----
